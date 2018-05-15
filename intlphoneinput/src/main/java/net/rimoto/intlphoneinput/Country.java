@@ -1,13 +1,21 @@
 package net.rimoto.intlphoneinput;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import java.util.Locale;
+
+@SuppressWarnings({"WeakerAccess", "unused", "NullableProblems"})
 public class Country {
     /**
      * Name of country
      */
+    @NonNull
     private String name;
     /**
      * ISO2 of country
      */
+    @NonNull
     private String iso;
     /**
      * Dial code prefix of country
@@ -22,7 +30,7 @@ public class Country {
      * @param iso      String of ISO2
      * @param dialCode int
      */
-    public Country(String name, String iso, int dialCode) {
+    public Country(@NonNull String name, @NonNull String iso, int dialCode) {
         setName(name);
         setIso(iso);
         setDialCode(dialCode);
@@ -33,6 +41,7 @@ public class Country {
      *
      * @return String
      */
+    @NonNull
     public String getName() {
         return name;
     }
@@ -42,7 +51,7 @@ public class Country {
      *
      * @param name String
      */
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
@@ -51,6 +60,7 @@ public class Country {
      *
      * @return String
      */
+    @NonNull
     public String getIso() {
         return iso;
     }
@@ -60,7 +70,7 @@ public class Country {
      *
      * @param iso String
      */
-    public void setIso(String iso) {
+    public void setIso(@NonNull String iso) {
         this.iso = iso.toUpperCase();
     }
 
@@ -82,6 +92,11 @@ public class Country {
         this.dialCode = dialCode;
     }
 
+    @NonNull
+    public String getDisplayName() {
+        return new Locale("", iso).getDisplayCountry(Locale.US);
+    }
+
     /**
      * Check if equals
      *
@@ -91,5 +106,9 @@ public class Country {
     @Override
     public boolean equals(Object o) {
         return (o instanceof Country) && (((Country) o).getIso().toUpperCase().equals(this.getIso().toUpperCase()));
+    }
+
+    public int getResId(@NonNull Context context) {
+        return context.getResources().getIdentifier(String.format("country_%s", iso.toLowerCase()), "drawable", context.getPackageName());
     }
 }

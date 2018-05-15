@@ -21,10 +21,6 @@
     <net.rimoto.intlphoneinput.IntlPhoneInput
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:flagPaddingBottom="4dp"
-        app:flagPaddingEnd="4dp"
-        app:flagPaddingStart="4dp"
-        app:flagPaddingTop="4dp"
         app:textColor="@color/colorAccent"
         app:textSize="16sp" />
 

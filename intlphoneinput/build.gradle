@@ -1,76 +1,31 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 101
-        versionName "1.0.1"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 200
+        versionName "2.0.0"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile 'com.googlecode.libphonenumber:libphonenumber:7.7.2'
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.9.5'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
 }
-
-ext {
-    groupId = 'net.rimoto'
-    versionId = '1.0.1'
-    gitProjectUrl = "https://github.com/rimoto/IntlPhoneInput"
-    gitUrl = "https://github.com/rimoto/IntlPhoneInput.git"
-}
-
-group = groupId  // Maven Group ID for the artifact
-version = versionId
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-apply plugin: 'com.github.dcendents.android-maven'
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                groupId groupId
-                artifactId "intlphoneinput"
-
-                // Add your description here
-                name "IntlPhoneInput"
-                description "A custom view for Android that allows the user to enter his phone number in an elegant and friendly way."
-                url gitProjectUrl
-
-                // Set your license
-                licenses {
-                    license {
-                        name "The Apache Software License, Version 2.0"
-                        url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                    }
-                }
-                developers {
-                    developer {
-                        name "Rimoto"
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    url gitProjectUrl
-                }
-            }
-        }
-    }
-}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -89,28 +44,4 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives javadocJar
     archives sourcesJar
-}
-
-apply plugin: 'com.jfrog.bintray'
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = 'maven'
-        name = 'IntlPhoneInput'
-        userOrg = "rimoto"
-        licenses = ['Apache-2.0']
-        publish = true
-        publicDownloadNumbers = true
-        vcsUrl = gitUrl
-        version {
-            name = versionId
-            released  = new Date()
-            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
-            gpg {
-                sign = true
-            }
-        }
-    }
 }

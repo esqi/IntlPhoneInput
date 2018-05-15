@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep class net.rimoto.intlphoneinput.** { *; }
+-keep class com.google.i18n.** { *; }
+-keep interface com.google.i18n.** { *; }

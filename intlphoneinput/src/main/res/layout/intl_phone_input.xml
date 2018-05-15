@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
     <android.support.v7.widget.AppCompatSpinner
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
         android:id="@+id/intl_phone_edit__country"
-        android:dropDownWidth="350dp"
-        android:background="@android:color/transparent" />
-    <android.support.v7.widget.AppCompatEditText
+        android:layout_width="@dimen/spinner_width"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:dropDownWidth="350dp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/intl_phone_edit__til"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/intl_phone_edit__phone"
-        android:lines="1"
-        android:textSize="@dimen/text_size_default"
-        android:inputType="phone" />
-</LinearLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/intl_phone_edit__country"
+        android:layout_toRightOf="@id/intl_phone_edit__country">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/intl_phone_edit__phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:lines="1"
+            android:textSize="@dimen/text_size_default" />
+    </android.support.design.widget.TextInputLayout>
+
+</merge>

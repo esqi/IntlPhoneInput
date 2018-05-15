@@ -1,24 +1,30 @@
 package net.rimoto.intlphoneinput;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
+@SuppressWarnings("WeakerAccess")
 public class CountrySpinnerAdapter extends ArrayAdapter<Country> {
-    private LayoutInflater mLayoutInflater;
+    private final LayoutInflater mLayoutInflater;
 
     /**
      * Constructor
      *
-     * @param context Context
+     * @param context   Context
+     * @param countries country list
      */
-    public CountrySpinnerAdapter(Context context) {
-        super(context, 0);
-        mLayoutInflater = LayoutInflater.from(context);
+    public CountrySpinnerAdapter(@NonNull Context context, @NonNull List<Country> countries) {
+        super(context, R.layout.item_country, R.id.intl_phone_edit__country__item_name, countries);
+        mLayoutInflater = LayoutInflater.from(getContext());
     }
 
     /**
@@ -30,23 +36,17 @@ public class CountrySpinnerAdapter extends ArrayAdapter<Country> {
      * @return covertView
      */
     @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
+    @NonNull
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.item_country, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.mImageView = (ImageView) convertView.findViewById(R.id.intl_phone_edit__country__item_image);
-            viewHolder.mNameView = (TextView) convertView.findViewById(R.id.intl_phone_edit__country__item_name);
-            viewHolder.mDialCode = (TextView) convertView.findViewById(R.id.intl_phone_edit__country__item_dialcode);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
         }
-
         Country country = getItem(position);
-        viewHolder.mImageView.setImageResource(getFlagResource(country));
-        viewHolder.mNameView.setText(country.getName());
-        viewHolder.mDialCode.setText(String.format("+%s", country.getDialCode()));
+        if (country != null) {
+            TextView textView = (TextView) convertView;
+            textView.setText(String.format("%s (+%s)", country.getName(), country.getDialCode()));
+            textView.setCompoundDrawablesWithIntrinsicBounds(country.getResId(getContext()), 0, 0, 0);
+        }
         return convertView;
     }
 
@@ -58,36 +58,19 @@ public class CountrySpinnerAdapter extends ArrayAdapter<Country> {
      * @param parent      parent of selected view
      * @return convertView
      */
+    @SuppressLint("DefaultLocale")
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Country country = getItem(position);
-
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = new ImageView(getContext());
+            convertView = mLayoutInflater.inflate(R.layout.spinner_value, parent, false);
         }
-
-        ((ImageView) convertView).setImageResource(getFlagResource(country));
-
+        Country country = getItem(position);
+        if (country != null) {
+            TextView textView = (TextView) convertView;
+            textView.setText(String.format("+%d", country.getDialCode()));
+            textView.setCompoundDrawablesWithIntrinsicBounds(country.getResId(getContext()), 0, 0, 0);
+        }
         return convertView;
-    }
-
-    /**
-     * Fetch flag resource by Country
-     *
-     * @param country Country
-     * @return int of resource | 0 value if not exists
-     */
-    private int getFlagResource(Country country) {
-        return getContext().getResources().getIdentifier("country_" + country.getIso().toLowerCase(), "drawable", getContext().getPackageName());
-    }
-
-
-    /**
-     * View holder for caching
-     */
-    private static class ViewHolder {
-        public ImageView mImageView;
-        public TextView mNameView;
-        public TextView mDialCode;
     }
 }
